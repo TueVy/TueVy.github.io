@@ -1,30 +1,46 @@
+const cameraPreview = document.getElementById('camera-preview');
+const canvas = document.getElementById('canvas');
+const captureBtn = document.getElementById('capture-btn');
+const imageWrapper = document.querySelector('.image-gallery .image-wrapper');
+const submitBtn = document.getElementById('submit-btn');
 const studentIdInput = document.getElementById('student-id');
-const captureButtons = document.querySelectorAll('.capture-buttons button');
-const videoElement = document.getElementById('camera-feed');
-const canvasElement = document.getElementById('camera-canvas');
-const canvasContext = canvasElement.getContext('2d');
 
-// Initialize the camera
+let capturedImages = [];
+
 navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => {
-    videoElement.srcObject = stream;
-    videoElement.play();
+    cameraPreview.srcObject = stream;
+    cameraPreview.play();
   })
   .catch(error => {
     console.error('Error accessing camera:', error);
   });
 
-// Capture photos
-captureButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const position = button.id.split('-')[1];
-    capturePhoto(position);
-  });
+captureBtn.addEventListener('click', () => {
+  canvas.getContext('2d').drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+  const imageData = canvas.toDataURL('image/jpeg');
+  capturedImages.push(imageData);
+  updateImageGallery();
+  checkSubmitStatus();
 });
 
-function capturePhoto(position) {
-  canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-  const dataUrl = canvasElement.toDataURL('image/jpeg');
-  // You can now send the dataUrl to the server or store it for further processing
-  console.log(`Captured ${position} photo:`, dataUrl);
+function updateImageGallery() {
+  imageWrapper.innerHTML = '';
+  capturedImages.forEach((imageData, index) => {
+    const img = document.createElement('img');
+    img.src = imageData;
+    img.dataset.index = index;
+    imageWrapper.appendChild(img);
+  });
 }
+
+function checkSubmitStatus() {
+  submitBtn.disabled = capturedImages.length < 5;
+}
+
+submitBtn.addEventListener('click', () => {
+  // Handle form submission with the captured images and student ID
+  console.log('Student ID:', studentIdInput.value);
+  console.log('Captured images:', capturedImages);
+  // Implement your server-side logic here
+});
