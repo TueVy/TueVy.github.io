@@ -7,25 +7,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="student-info">
-      <h2>Student ID</h2>
-      <input type="text" id="student-id" placeholder="Enter Student ID">
-    </div>
+    <div class="container">
+        <div class="student-info">
+          <h2>Student ID</h2>
+          <input type="text" id="student-id" placeholder="Enter Student ID">
+        </div>
     <div class="camera-section">
         <h2>Please turn your face up</h2>
-      <div class="camera-container">
-        <video id="camera-feed"></video>
-        <canvas id="camera-canvas" width="640" height="480"></canvas>
-      </div>
-      <div class="capture-buttons">
-        <button id="capture-front">Capture Front</button>
-        <button id="capture-top">Capture Top</button>
-        <button id="capture-bottom">Capture Bottom</button>
-        <button id="capture-left">Capture Left</button>
-        <button id="capture-right">Capture Right</button>
-      </div>
+      <video id="camera-preview"></video>
+      <canvas id="canvas" width="640" height="480"></canvas>
+      <button id="capture-btn">Capture</button>
     </div>
+    <div class="image-gallery">
+      <div class="image-wrapper"></div>
+    </div>
+    <button id="submit-btn" disabled><h3>Submit</h3></button>
   </div>
   <script src="script.js"></script>
 </body>
